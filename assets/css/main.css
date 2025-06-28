@@ -1664,3 +1664,9 @@ input, select, textarea {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+
+		input[type="submit"].primary:hover {
+			background-color: #fff;
+			color: #1b1f22;
+			box-shadow: 0 0 0 2px #fff inset;
+		  }		  
