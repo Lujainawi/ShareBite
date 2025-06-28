@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - ShareBite</title>
+  <link rel="stylesheet" href="signUp.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
+  <script src="../js/firebase.js" defer></script>
+  <script src="../js/signup.js" defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
+</head>
+<body>
+  <div class="overlay">
+    <div class="signup-box">
+      <h2>Sign Up</h2>
+      <form id="signup-form">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" placeholder="Select your address from list" required autocomplete="off" />
+
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <label>
+          <input type="checkbox" id="isBusiness" />
+          I have a business (store / restaurant)
+        </label>
+
+        <div class="actions">
+          <button class="primary" type="submit">Sign Up with Email</button>
+          <p style="margin: 1rem 0;">or</p>
+          <button class="primary" type="button" id="googleSignUp">Sign Up with Google</button>
+        </div>
+      </form>
+      <a href="signIn.html" class="close">Already have an account? Sign in</a>
+    </div>
+  </div>
+</body>
+</html>
