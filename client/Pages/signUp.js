@@ -44,7 +44,12 @@ document.getElementById("googleSignUp").addEventListener("click", async (e) => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    await firebase.firestore().collection("users").doc(user.uid).set(userData);
+    const userRef = firebase.firestore().collection("users").doc(user.uid);
+const docSnap = await userRef.get();
+
+if (!docSnap.exists) {
+  await userRef.set(userData);
+}
     alert("Sign up successful!");
 
     // הפנייה לדף הבא – למשל העלאת פוסט
