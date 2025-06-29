@@ -1,10 +1,3 @@
-// firebase.js
-
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-
-// 👇 החליפי את הערכים לפי מה שקיבלת מ-Firebase Console
 const firebaseConfig = {
   apiKey: "AIzaSyAYz-fRl3HV1LPos31H8mBylZi5ICnko2k",
   authDomain: "sharebite-ee576.firebaseapp.com",
@@ -15,6 +8,7 @@ const firebaseConfig = {
   measurementId: "G-KQ44Y7W3QS"
 };
 
+<<<<<<< HEAD
 
 const app = initializeApp(firebaseConfig);
 
@@ -23,3 +17,11 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 const analytics = getAnalytics(app);
+=======
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Make auth & db globals
+const auth = firebase.auth();
+const db = firebase.firestore();
+>>>>>>> 52ae6193db1065bf58ec9ffcbbe4042a3616f49f
