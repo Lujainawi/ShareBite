@@ -77,3 +77,18 @@ button.primary:hover {
   color: #888;
   text-decoration: none;
 }
+
+.error-message {
+  color: #c0392b; 
+  background: none; 
+  padding: 0.5rem 0;
+  margin-top: 1rem;
+  text-align: center;
+  border: none; 
+  font-size: 0.9rem;
+}
+
+.error-message:empty {
+  display: none; 
+}
+
