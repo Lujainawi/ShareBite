@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up - ShareBite</title>
-  <link rel="stylesheet" href="signUp.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="../js/firebase.js" defer></script>
-  <script src="signUp.js" defer></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2Ax-tldB4_EfkT4G0RB5RSPTCoeZL3Vc&libraries=places&callback=initAutocomplete" async defer></script>
-</head>
-=======
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up - ShareBite</title>
     <link rel="stylesheet" href="../css/signUp.css" />
-    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
-    <script src="../src/firebase.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js"></script>
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAYz-fRl3HV1LPos31H8mBylZi5ICnko2k",
+        authDomain: "sharebite-ee576.firebaseapp.com",
+        projectId: "sharebite-ee576",
+        storageBucket: "sharebite-ee576.appspot.com",
+        messagingSenderId: "885355239460",
+        appId: "1:885355239460:web:9b1b051a53a4ff2c41a0b1",
+        measurementId: "G-KQ44Y7W3QS"
+      };
+    
+      firebase.initializeApp(firebaseConfig);
+      window.auth = firebase.auth();
+      window.db = firebase.firestore();
+    </script>
+    
     <script src="../js/signUp.js"></script>
   </head>  
->>>>>>> 52ae6193db1065bf58ec9ffcbbe4042a3616f49f
 <body>
   <div class="overlay">
     <div class="signup-box">

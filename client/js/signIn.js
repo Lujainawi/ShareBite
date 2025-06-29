@@ -11,32 +11,32 @@ document.getElementById("signin-form").addEventListener("submit", async (e) => {
   }
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    await auth.signInWithEmailAndPassword(email, password);
     alert("Signed in successfully!");
     window.location.href = "../pages/posts.html";
   } catch (error) {
-    console.error(error);
+    console.error("Error during email sign in:", error);
     alert(error.message);
   }
 });
 
 // Sign in with Google
 document.getElementById("googleSignIn").addEventListener("click", async () => {
-  const provider = new GoogleAuthProvider();
+  const provider = new firebase.auth.GoogleAuthProvider();
 
   try {
-    const result = await signInWithPopup(auth, provider);
+    const result = await auth.signInWithPopup(provider);
     const user = result.user;
 
     if (result.additionalUserInfo.isNewUser && user) {
-      await setDoc(doc(db, "users", user.uid), {
+      await db.collection("users").doc(user.uid).set({
         uid: user.uid,
         name: user.displayName || "",
         phone: "",
         location: "",
         email: user.email,
         isBusiness: false,
-        createdAt: serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
 
@@ -44,7 +44,7 @@ document.getElementById("googleSignIn").addEventListener("click", async () => {
     window.location.href = "../pages/posts.html";
 
   } catch (error) {
-    console.error(error);
+    console.error("Error during Google sign in:", error);
     alert(error.message);
   }
 });
