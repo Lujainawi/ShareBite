@@ -14,3 +14,6 @@ firebase.initializeApp(firebaseConfig);
 // Make auth & db globals
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+window.auth = auth;
+window.db = db;

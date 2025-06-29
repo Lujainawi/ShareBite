@@ -15,8 +15,10 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
 
   try {
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    console.log("User created:", userCredential);
+  
     const user = userCredential.user;
-
+  
     await db.collection("users").doc(user.uid).set({
       uid: user.uid,
       name: fullName,
@@ -26,13 +28,15 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
       isBusiness: isBusiness,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
-
+    console.log("User added to Firestore!");
+  
     alert("Sign up successful!");
     window.location.href = "../pages/posts.html";
+  
   } catch (error) {
-    console.error(error);
+    console.error("Error during sign up:", error);
     alert(error.message);
-  }
+  }  
 });
 
 
