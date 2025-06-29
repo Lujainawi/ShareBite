@@ -1,13 +1,12 @@
 import { auth, db } from "../src/firebase.js";
 import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup
+  signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 import {
   setDoc,
   doc,
-  serverTimestamp
+  serverTimestamp,
+  getDoc 
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 // Sign in with Email
@@ -31,41 +30,28 @@ document.getElementById("signin-form").addEventListener("submit", async (e) => {
     return;
   }
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "../pages/posts.html";
-  } catch (error) {
-    console.error("Error during email sign in:", error);
-    errorDiv.textContent = error.message;
-  }
-});
+ try {
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
 
-// Sign in with Google
-document.getElementById("googleSignIn").addEventListener("click", async () => {
-  const provider = new GoogleAuthProvider();
-  const errorDiv = document.getElementById("error-message");
-  errorDiv.textContent = "";
+  // 🔍 שלוף את המסמך של המשתמש
+  const userDoc = await getDoc(doc(db, "users", user.uid));
 
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
 
-    if (result.additionalUserInfo.isNewUser && user) {
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name: user.displayName || "",
-        phone: "",
-        location: "",
-        email: user.email,
-        isBusiness: false,
-        createdAt: serverTimestamp(),
-      });
+    if (userData.isVolunteer) {
+      window.location.href = "../pages/volunteerTasks.html";
+    } else {
+      window.location.href = "../pages/posts.html";
     }
-
-    window.location.href = "../pages/posts.html";
-
-  } catch (error) {
-    console.error("Error during Google sign in:", error);
-    errorDiv.textContent = error.message;
+  } else {
+    console.error("No user document found!");
+    errorDiv.textContent = "User profile not found. Please sign up again.";
   }
+
+} catch (error) {
+  console.error("Error during email sign in:", error);
+  errorDiv.textContent = error.message;
+}
 });

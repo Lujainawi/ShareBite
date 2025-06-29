@@ -1,8 +1,6 @@
 import { auth, db } from "../src/firebase.js";
 import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 import {
   setDoc,
@@ -19,6 +17,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const isBusiness = document.getElementById("isBusiness").checked;
+  const isVolunteer = document.getElementById("isVolunteer").checked;
 
   const errorDiv = document.getElementById("error-message");
   errorDiv.textContent = ""; // Clear previous errors
@@ -80,46 +79,20 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
       location: location,
       email: email,
       isBusiness: isBusiness,
+      isVolunteer: isVolunteer,
       createdAt: serverTimestamp(),
     });
 
     console.log("User added to Firestore!");
     alert("Sign up successful!");
-    window.location.href = "../pages/posts.html";
+    if (isVolunteer) {
+      window.location.href = "../pages/volunteerTasks.html";
+    } else {
+      window.location.href = "../pages/posts.html";
+    }
 
   } catch (error) {
     console.error("Error during sign up:", error);
     alert(error.message);
-  }
-});
-
-// ✅ Sign up with Google
-document.getElementById("googleSignUp").addEventListener("click", async () => {
-  const provider = new GoogleAuthProvider();
-  const errorDiv = document.getElementById("error-message");
-  errorDiv.textContent = "";
-
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    if (result.additionalUserInfo.isNewUser && user) {
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name: user.displayName || "",
-        phone: "",
-        location: "",
-        email: user.email,
-        isBusiness: false,
-        createdAt: serverTimestamp(),
-      });
-    }
-
-    alert("Sign up with Google successful!");
-    window.location.href = "../pages/posts.html";
-
-  } catch (error) {
-    console.error("Error during Google sign up:", error);
-    errorDiv.textContent = error.message;
   }
 });
