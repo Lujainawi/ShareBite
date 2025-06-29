@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up - ShareBite</title>
-  <link rel="stylesheet" href="signUp.css" />
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
-  <script src="../js/firebase.js" defer></script>
-  <script src="../js/signup.js" defer></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - ShareBite</title>
+    <link rel="stylesheet" href="../css/signUp.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/signUp.js"></script>
+  </head>  
 <body>
   <div class="overlay">
     <div class="signup-box">
@@ -24,7 +23,15 @@
         <input type="tel" id="phone" name="phone" required />
 
         <label for="location">Location</label>
-        <input type="text" id="location" name="location" placeholder="Select your address from list" required autocomplete="off" />
+        <select id="location" name="location" required>
+          <option value="">Select your location</option>
+          <option value="Ramat HaGolan">Ramat HaGolan</option>
+          <option value="Haifa">Haifa</option>
+          <option value="Tel Aviv">Tel Aviv</option>
+          <option value="Jerusalem">Jerusalem</option>
+          <option value="Center">Center</option>
+        </select>
+
 
         <label for="email">Email</label>
         <input type="text" id="email" name="email" required />
