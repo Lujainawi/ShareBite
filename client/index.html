@@ -116,25 +116,26 @@
       <article id="contact">
         <h2 class="major">Contact Us</h2>
         <p>Drop us a message anytime. 💌</p>
-        <form method="post" action="#">
+        <form id="contactForm">
           <div class="fields">
             <div class="field half">
               <label for="name">Name</label>
-              <input type="text" name="name" id="name" placeholder="Your name" />
+              <input type="text" name="name" id="name" placeholder="Your name" required/>
             </div>
             <div class="field half">
               <label for="email">Email</label>
-              <input type="text" name="email" id="email" placeholder="Your email" />
+              <input type="text" name="email" id="email" placeholder="Your email" required/>
             </div>
             <div class="field">
               <label for="message">Message</label>
-              <textarea name="message" id="message" rows="4"></textarea>
+              <textarea name="message" id="message" rows="4" required></textarea>
             </div>
           </div>
           <ul class="actions">
             <li><input type="submit" value="Send Message" class="primary" /></li>
             <li><input type="reset" value="Reset" /></li>
           </ul>
+          <p id="statusMessage" style="text-align:center; margin-top: 1rem;"></p>
         </form>
       </article>
 
@@ -155,6 +156,7 @@
   <script src="/assets/js/breakpoints.min.js"></script>
   <script src="/assets/js/util.js"></script>
   <script src="/assets/js/main.js"></script>
+  <script type="module" src="js/contactUs.js"></script>
 
 </body>
 </html>
