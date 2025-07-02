@@ -3,8 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <title>Posts Page</title>
+  <link rel="stylesheet" href="../css/posts.css">
+  <script type="module" src="../js/posts.js"></script>
 </head>
 <body>
-  <h1>Welcome to Posts Page 🎉</h1>
+  <!-- Toolbar -->
+  <header>
+    <span id="welcome-message">Hello, User</span>
+    <nav>
+      <button id="my-posts-btn">My Posts</button>
+      <button id="all-posts-btn">All Posts</button>
+      <button id="home-btn">Home</button>
+      <button id="logout-btn">Log out</button>
+    </nav>
+  </header>
+
+  <!-- Posts Container -->
+  <main>
+    <button id="add-post-btn" class="add-btn">+</button>
+    <div id="posts-container"></div>
+  </main>
+
+  <!-- Add Post Modal -->
+  <div id="add-post-modal" class="modal hidden">
+    <form id="add-post-form">
+      <h2>Add New Post</h2>
+      <label>Image: <input type="file" id="image-file" required /></label>
+      <label>Title: <input type="text" id="post-title" required /></label>
+      <label>Description: <textarea id="post-description" required></textarea></label>
+      <label>Location: <input type="text" id="post-location" required /></label>
+      <label>Expiry Date: <input type="date" id="post-expiry" required /></label>
+      <button type="submit">Publish</button>
+      <button type="button" id="close-modal-btn">Cancel</button>
+    </form>
+  </div>
 </body>
 </html>
