@@ -27,6 +27,13 @@ html, body {
   max-width: 500px;
   width: 100%;
   color: white;
+  overflow: visible;
+}
+
+.signup-box select {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 2rem;
 }
 
 h2 {
@@ -144,4 +151,42 @@ button.primary:hover {
 
 .close-btn:hover {
   color: #ccc;
+}
+
+/* ======== Custom Dropdown ======== */
+.custom-dropdown {
+  position: relative;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selected-option {
+  padding: 0.75rem;
+  color: #fff;
+}
+
+.dropdown-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 10px 10px;
+  z-index: 1000;
+}
+
+.dropdown-options .option {
+  padding: 0.75rem;
+  color: #000;
+}
+
+.dropdown-options .option:hover {
+  background: #eee;
 }

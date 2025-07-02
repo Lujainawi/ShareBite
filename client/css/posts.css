@@ -1,33 +1,106 @@
-/* Toolbar */
+/* ======== בסיס ======== */
+body {
+  background: linear-gradient(135deg, #222 0%, #333 100%);
+  margin: 0;
+  padding-top: 80px;     
+  font-family: 'Arial', sans-serif;
+}
+
+/* ======== Toolbar Transparent with Border ======== */
 header {
-  background: #333;
+  background: rgba(255, 255, 255, 0.1); /* כמעט שקוף */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #fff;
-  padding: 1em;
+  padding: 1.2em 2em;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4); /* קו תחתון */
+}
+
+header span {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5em;
+  padding-right: 2em;
 }
 
 nav button {
-  margin-left: 1em;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 0.5em 1em;
+  margin: 0.3em;
+  border-radius: 30px; /* יותר עגול */
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* Add Post Button */
-.add-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #333;
+nav button:hover {
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav {
+    justify-content: flex-start;
+  }
+  nav button {
+    margin: 0.3em;
+  }
+}
+
+/* Map Icon */
+nav .map-icon {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  margin-left: 1em;
+  background: url('../images/map-icon.svg') no-repeat center;
+  background-size: contain;
   cursor: pointer;
 }
 
-/* Posts Container */
+/* ======== כפתור ➕ ======== */
+.add-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #6d6b6b;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.add-btn:hover {
+  background: #222;
+  color: #fff;
+}
+
+/* ======== Posts Container ======== */
 #posts-container {
   display: flex;
   flex-wrap: wrap;
@@ -35,10 +108,11 @@ nav button {
   margin: 2em;
 }
 
+/* ======== Flip Cards ======== */
 .flip-card {
-  background-color: transparent;
+  background: transparent;
   width: 250px;
-  height: 300px;
+  height: 320px;
   perspective: 1000px;
   margin: 1em;
 }
@@ -49,57 +123,171 @@ nav button {
   height: 100%;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
 .flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  backface-visibility: hidden;
   background: #fff;
-  padding: 1em;
+  color: #333;
 }
 
 .flip-card-front img {
   width: 100%;
-  height: 70%;
+  height: 100%;
   object-fit: cover;
 }
 
 .flip-card-front h3 {
-  margin-top: 0.5em;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  margin: 0;
+  background: rgba(255,255,255,0.8);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 1.1em;
 }
 
 .flip-card-back {
+  background: #fff;
   transform: rotateY(180deg);
+  padding: 1.2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Modal */
+.flip-card-back p {
+  margin: 0.5em 0;
+}
+
+.flip-card-back button {
+  background: transparent;
+  border: 1px solid #222;
+  color: #222;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1em;
+  transition: background 0.3s, color 0.3s;
+}
+
+.flip-card-back button:hover {
+  background: #222;
+  color: #fff;
+}
+
+/* ======== Modal ======== */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal form {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
   padding: 2em;
-  border-radius: 8px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.modal form label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.modal form input,
+.modal form textarea,
+.modal form select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 0.6em;
+  margin-top: 0.3em;
+  border-radius: 4px;
+}
+
+.modal form input::placeholder,
+.modal form textarea::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.modal form button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 0.5em 1em;
+  margin-right: 0.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.modal form button:hover {
+  background: rgba(255,255,255,0.3);
+  border: 1px solid #fff;
 }
 
 .hidden {
   display: none;
+}
+
+/* ======== Custom Dropdown ======== */
+.custom-dropdown {
+  position: relative;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selected-option {
+  padding: 0.75rem;
+  color: #fff;
+}
+
+.dropdown-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 10px 10px;
+  z-index: 1000;
+}
+
+.dropdown-options .option {
+  padding: 0.75rem;
+  color: #000;
+}
+
+.dropdown-options .option:hover {
+  background: #eee;
 }

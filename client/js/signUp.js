@@ -96,3 +96,31 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     alert(error.message);
   }
 });
+
+// === Custom Dropdown Logic ===
+const customDropdown = document.getElementById("custom-location");
+const selectedOption = customDropdown.querySelector(".selected-option");
+const dropdownOptions = customDropdown.querySelector(".dropdown-options");
+const hiddenInput = document.getElementById("location");
+
+// Toggle dropdown
+selectedOption.addEventListener("click", () => {
+  dropdownOptions.style.display =
+    dropdownOptions.style.display === "block" ? "none" : "block";
+});
+
+// Pick option
+dropdownOptions.querySelectorAll(".option").forEach(option => {
+  option.addEventListener("click", () => {
+    selectedOption.textContent = option.textContent;
+    hiddenInput.value = option.dataset.value;
+    dropdownOptions.style.display = "none";
+  });
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!customDropdown.contains(e.target)) {
+    dropdownOptions.style.display = "none";
+  }
+});

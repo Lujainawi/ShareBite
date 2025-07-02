@@ -20,51 +20,54 @@
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" required />
 
-        <label for="location">Location</label>
-        <select id="location" name="location" required>
-          <option value="">Select your location</option>
-          <option value="Ramat HaGolan">Ramat HaGolan</option>
-          <option value="Haifa">Haifa</option>
-          <option value="Tel Aviv">Tel Aviv</option>
-          <option value="Jerusalem">Jerusalem</option>
-          <option value="Center">Center</option>
-          <option value="Be'er Sheva">Be'er Sheva</option>
-          <option value="Eilat">Eilat</option>
-          <option value="Nazareth">Nazareth</option>
-          <option value="Tiberias">Tiberias</option>
-          <option value="Safed">Safed</option>
-          <option value="Ashdod">Ashdod</option>
-          <option value="Ashkelon">Ashkelon</option>
-          <option value="Petah Tikva">Petah Tikva</option>
-          <option value="Netanya">Netanya</option>
-          <option value="Herzliya">Herzliya</option>
-<option value="Holon">Holon</option>
-<option value="Rishon LeZion">Rishon LeZion</option>
-<option value="Rehovot">Rehovot</option>
-<option value="Bat Yam">Bat Yam</option>
-<option value="Hadera">Hadera</option>
-<option value="Ramat Gan">Ramat Gan</option>
-<option value="Kfar Saba">Kfar Saba</option>
-<option value="Ra'anana">Ra'anana</option>
-<option value="Acre">Acre (Akko)</option>
-<option value="Kiryat Shmona">Kiryat Shmona</option>
-<option value="Dimona">Dimona</option>
-<option value="Arad">Arad</option>
-<option value="Ofakim">Ofakim</option>
-<option value="Sderot">Sderot</option>
-<option value="Yokneam">Yokneam</option>
-<option value="Modiin">Modiin</option>
-<option value="Lod">Lod</option>
-<option value="Ramla">Ramla</option>
-<option value="Nahariya">Nahariya</option>
-<option value="Beit Shemesh">Beit Shemesh</option>
-<option value="Ma'alot-Tarshiha">Ma'alot-Tarshiha</option>
-<option value="Tayibe">Tayibe</option>
-<option value="Umm al-Fahm">Umm al-Fahm</option>
-<option value="Sakhnin">Sakhnin</option>
-<option value="Kafr Qasim">Kafr Qasim</option>
-
-        </select>
+        <label for="custom-location">Location</label>
+        <div class="custom-dropdown" id="custom-location">
+          <div class="selected-option">Select your location</div>
+          <div class="dropdown-options">
+            <div class="option" data-value="Ramat HaGolan">Ramat HaGolan</div>
+            <div class="option" data-value="Haifa">Haifa</div>
+            <div class="option" data-value="Tel Aviv">Tel Aviv</div>
+            <div class="option" data-value="Jerusalem">Jerusalem</div>
+            <div class="option" data-value="Center">Center</div>
+            <div class="option" data-value="Be'er Sheva">Be'er Sheva</div>
+            <div class="option" data-value="Eilat">Eilat</div>
+            <div class="option" data-value="Nazareth">Nazareth</div>
+            <div class="option" data-value="Tiberias">Tiberias</div>
+            <div class="option" data-value="Safed">Safed</div>
+            <div class="option" data-value="Ashdod">Ashdod</div>
+            <div class="option" data-value="Ashkelon">Ashkelon</div>
+            <div class="option" data-value="Petah Tikva">Petah Tikva</div>
+            <div class="option" data-value="Netanya">Netanya</div>
+            <div class="option" data-value="Herzliya">Herzliya</div>
+            <div class="option" data-value="Holon">Holon</div>
+            <div class="option" data-value="Rishon LeZion">Rishon LeZion</div>
+            <div class="option" data-value="Rehovot">Rehovot</div>
+            <div class="option" data-value="Bat Yam">Bat Yam</div>
+            <div class="option" data-value="Hadera">Hadera</div>
+            <div class="option" data-value="Ramat Gan">Ramat Gan</div>
+            <div class="option" data-value="Kfar Saba">Kfar Saba</div>
+            <div class="option" data-value="Ra'anana">Ra'anana</div>
+            <div class="option" data-value="Acre">Acre (Akko)</div>
+            <div class="option" data-value="Kiryat Shmona">Kiryat Shmona</div>
+            <div class="option" data-value="Dimona">Dimona</div>
+            <div class="option" data-value="Arad">Arad</div>
+            <div class="option" data-value="Ofakim">Ofakim</div>
+            <div class="option" data-value="Sderot">Sderot</div>
+            <div class="option" data-value="Yokneam">Yokneam</div>
+            <div class="option" data-value="Modiin">Modiin</div>
+            <div class="option" data-value="Lod">Lod</div>
+            <div class="option" data-value="Ramla">Ramla</div>
+            <div class="option" data-value="Nahariya">Nahariya</div>
+            <div class="option" data-value="Beit Shemesh">Beit Shemesh</div>
+            <div class="option" data-value="Ma'alot-Tarshiha">Ma'alot-Tarshiha</div>
+            <div class="option" data-value="Tayibe">Tayibe</div>
+            <div class="option" data-value="Umm al-Fahm">Umm al-Fahm</div>
+            <div class="option" data-value="Sakhnin">Sakhnin</div>
+            <div class="option" data-value="Kafr Qasim">Kafr Qasim</div>
+          </div>
+        </div>
+        <input type="hidden" id="location" name="location" required>
+        
 
 
         <label for="email">Email</label>
