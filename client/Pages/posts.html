@@ -133,11 +133,24 @@
       </div>
       <input type="hidden" id="post-location" name="post-location" required>
 
+
       <label>Expiry Date: <input type="date" id="post-expiry-date" required /></label>
       <label>Expiry Time: <input type="time" id="post-expiry-time" required /></label>
       <button type="submit">Publish</button>
       <button type="button" id="close-modal-btn">Cancel</button>
     </form>
   </div>
+
+  <!-- Custom Interested Modal -->
+  <div id="interested-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>How do you want to take this post?</h3>
+      <p>Would you like to take it yourself or ask for a volunteer?</p>
+      <button id="take-myself-btn">Take Myself</button>
+      <button id="need-volunteer-btn">Need Volunteer</button>
+      <button id="close-interested-btn">Cancel</button>
+    </div>
+  </div> 
+  
 </body>
 </html>

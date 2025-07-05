@@ -2,9 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Volunteer Page</title>
+  <title>Volunteer Tasks</title>
+  <link rel="stylesheet" href="../css/volunteerTasks.css">
+  <script type="module" src="../js/volunteerTasks.js"></script>
 </head>
 <body>
-  <h1>Welcome to Volunteer Page 🎉</h1>
+  <!-- Toolbar -->
+  <header>
+    <span id="welcome-message">Hello, Volunteer</span>
+    <nav>
+      <button onclick="window.location.href='../pages/posts.html'">Back to Posts</button>
+      <button id="logout-btn">Log out</button>
+    </nav>
+  </header>
+
+  <!-- Volunteer Posts -->
+  <main>
+    <h2>Posts Waiting for Volunteers</h2>
+    <div id="volunteer-posts-container"></div>
+  </main>
 </body>
 </html>

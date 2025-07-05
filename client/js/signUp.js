@@ -73,7 +73,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     const user = userCredential.user;
 
     await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
+      userId: user.uid,
       name: fullName,
       phone: phone,
       location: location,

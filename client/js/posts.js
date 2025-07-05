@@ -12,6 +12,8 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { updateDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
 
 // ======= DOM Elements =======
 const welcomeMsg = document.getElementById("welcome-message");
@@ -78,10 +80,12 @@ function renderPosts(snapshot) {
       return;
     }
 
-    const isOwner = post.userId === currentUser.uid;
+    const isOwner = currentUser && post.userId === currentUser.uid;
+
+    const statusClass = getStatusClass(post.status);
 
     postsContainer.innerHTML += `
-      <div class="flip-card">
+      <div class="flip-card ${statusClass}" onclick="flipCard(this)">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="${post.imageUrl}" alt="Food Image">
@@ -93,7 +97,9 @@ function renderPosts(snapshot) {
             <p><strong>Location:</strong> ${post.location}</p>
             <p><strong>Expiry:</strong> ${expiry?.toLocaleString()}</p>
             ${isOwner ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
-            <button class="interested-btn">I'm interested</button>
+            ${!isOwner && post.status === "available"
+              ? `<button class="interested-btn" onclick="handleInterested('${docSnap.id}')">I’m interested</button>`
+              : ""}                     
           </div>
         </div>
       </div>
@@ -158,8 +164,12 @@ addPostForm.addEventListener("submit", async (e) => {
       location,
       expiry: expiryDateTime,
       imageUrl,
-      createdAt: serverTimestamp()
-    });
+      createdAt: serverTimestamp(),
+      needsVolunteer: false,
+      status: "available",
+      takenBy: null,
+      volunteerId: null
+    });    
 
     alert("The post was published successfully 🎉");
     addPostForm.reset();
@@ -225,3 +235,67 @@ document.addEventListener("click", (e) => {
     filterDropdownOptions.style.display = "none";
   }
 });
+
+window.handleInterested = async function(postId) {
+  if (!currentUser) {
+    if (confirm("You need to sign in first to show interest. Go to sign up?")) {
+      window.location.href = "../pages/signUp.html";
+    }
+    return;
+  }
+
+  const modal = document.getElementById("interested-modal");
+  modal.classList.remove("hidden");
+
+  document.getElementById("take-myself-btn").onclick = async () => {
+    await updateDoc(doc(db, "posts", postId), {
+      status: "taken-by-owner",
+      takenBy: currentUser.uid
+    });
+    alert("You have reserved this post to take yourself!");
+    modal.classList.add("hidden");
+  };
+
+  document.getElementById("need-volunteer-btn").onclick = async () => {
+    const postRef = doc(db, "posts", postId);
+    const postSnap = await getDoc(postRef);
+    const postData = postSnap.data();
+  
+    await updateDoc(postRef, {
+      ...postData,
+      needsVolunteer: true,
+      status: "waiting-volunteer",
+      takenBy: null,
+      volunteerId: null
+    });
+  
+    alert("Volunteer request sent! A volunteer will contact you soon.");
+    modal.classList.add("hidden");
+  };  
+
+  document.getElementById("close-interested-btn").onclick = () => {
+    modal.classList.add("hidden");
+  };
+
+  console.log("Current user:", currentUser.uid);
+
+  console.log("Trying to update:", { needsVolunteer: true, status: "waiting-volunteer" });
+
+};
+
+
+// Status for posts
+function getStatusClass(status) {
+  switch (status) {
+    case "taken-by-owner": return "gray-card";
+    case "waiting-volunteer": return "yellow-card";
+    case "in-progress": return "blue-card";
+    case "done": return "green-card";
+    default: return "";
+  }
+}
+
+window.flipCard = function(cardElement) {
+  const inner = cardElement.querySelector('.flip-card-inner');
+  inner.classList.toggle('is-flipped');
+};
