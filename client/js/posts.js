@@ -79,6 +79,7 @@ function renderPosts(snapshot) {
     const expiry = post.expiry?.toDate();
     const now = new Date();
     if (expiry && expiry < now) return;
+    if (post.status === "done") return;
 
     const isOwner = currentUser && post.userId === currentUser.uid;
     const statusClass = getStatusClass(post.status);
@@ -95,6 +96,8 @@ function renderPosts(snapshot) {
             <p><strong>Posted by:</strong> ${post.userName || "Unknown"}</p>
             <p>${post.description}</p>
             <p><strong>Location:</strong> ${post.location}</p>
+            ${post.status === "waiting-volunteer" ? `<p class="status-label">⏳ Waiting for Volunteer</p>` : ""}
+            ${post.requestedByName ? `<p><strong>Requested by:</strong> ${post.requestedByName}</p>` : ""}
             <p><strong>Expiry:</strong> ${expiry?.toLocaleString()}</p>
             ${isOwner ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
 ${!isOwner && (post.status === "available" || post.status === "taken-by-owner")
@@ -140,12 +143,63 @@ closeModalBtn.addEventListener("click", () => {
   addPostModal.classList.add("hidden");
 });
 
+let selectedPostId = null; // משתנה גלובלי לשמירת הפוסט
+
 document.addEventListener("DOMContentLoaded", () => {
   const spinner = document.getElementById("global-spinner");
   if (spinner) {
     spinner.classList.add("hidden");
-  }
+  }
+
+  // חיבור כפתור Need Volunteer
+  const needVolunteerBtn = document.getElementById("need-volunteer-btn");
+  if (needVolunteerBtn) {
+    needVolunteerBtn.onclick = async function () {
+      if (!selectedPostId) return;
+
+      const postRef = doc(db, "posts", selectedPostId); 
+      const postSnap = await getDoc(postRef);
+      const postData = postSnap.data();
+
+      const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+      const userData = userSnap.exists() ? userSnap.data() : null;
+
+      await updateDoc(postRef, {
+        ...postData,
+        needsVolunteer: true,
+        status: "waiting-volunteer",
+        takenBy: null,
+        volunteerId: null,
+        requestedBy: currentUser.uid,
+        requestedByName: userData?.name || currentUser.email
+      });
+
+      document.getElementById("confirmation-modal").classList.remove("hidden");
+      document.getElementById("interested-modal").classList.add("hidden");
+    };
+  }
+
+  const cancelBtn = document.getElementById("cancel-modal-btn");
+  if (cancelBtn) {
+    cancelBtn.onclick = () => {
+      document.getElementById("interested-modal").classList.add("hidden");
+    };
+  }
+
+  document.getElementById("done-task-btn").onclick = async () => {
+    const { postId, postData } = window.selectedPostForPickup;
+  
+    await updateDoc(doc(db, "posts", postId), {
+      ...postData,
+      status: "done",
+      takenBy: currentUser.uid
+    });
+  
+    alert("Thank you! The task has been marked as completed.");
+    document.getElementById("contact-modal").classList.add("hidden");
+  };
 });
+
 
 
 
@@ -255,6 +309,8 @@ document.addEventListener("click", (e) => {
 });
 
 window.handleInterested = async function(postId) {
+  selectedPostId = postId;
+
   if (!currentUser) {
     if (confirm("You need to sign in first to show interest. Go to sign up?")) {
       window.location.href = "../pages/signUp.html";
@@ -270,9 +326,19 @@ document.getElementById("take-myself-btn").onclick = async () => {
   const postSnap = await getDoc(postRef);
   const postData = postSnap.data();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ede76170e7a836b8df16684f18a351a25cccfb51
   const userRef = doc(db, "users", postData.userId);
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
+
+  window.selectedPostForPickup = {
+    postId,
+    postData,
+    donorData: userData 
+  };  
 
   // סגירת מודל הבחירה
   modal.classList.add("hidden");
@@ -292,6 +358,7 @@ document.getElementById("take-myself-btn").onclick = async () => {
 
   contactModal.classList.remove("hidden");
 
+<<<<<<< HEAD
   // מחיקה מיידית אחרי שהמודל נפתח
   setTimeout(async () => {
     try {
@@ -320,17 +387,19 @@ document.getElementById("take-myself-btn").onclick = async () => {
     alert("Volunteer request sent! A volunteer will contact you soon.");
     modal.classList.add("hidden");
   };  
+=======
+console.log("Current user:", currentUser.uid);
+console.log("Trying to update:", { needsVolunteer: true, status: "waiting-volunteer" });
+>>>>>>> ede76170e7a836b8df16684f18a351a25cccfb51
 
   document.getElementById("close-interested-btn").onclick = () => {
     modal.classList.add("hidden");
   };
 
   console.log("Current user:", currentUser.uid);
-
   console.log("Trying to update:", { needsVolunteer: true, status: "waiting-volunteer" });
 
-};
-
+}; 
 
 // Status for posts
 function getStatusClass(status) {
@@ -344,9 +413,8 @@ function getStatusClass(status) {
 
 
 window.flipCard = function(cardElement, event) {
-  if (event && (event.target.closest("button") || event.target.tagName === "BUTTON")) {
-    return; 
-  }
+  if (event && (event.target.closest("button") || event.target.tagName === "BUTTON")) return;
+
   const inner = cardElement.querySelector('.flip-card-inner');
   inner.classList.toggle('is-flipped');
 };
