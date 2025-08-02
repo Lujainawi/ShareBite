@@ -1,4 +1,6 @@
 // client/js/posts/posts.js
+
+
 import { auth, db } from "../../src/firebase.js";
 import {
   collection,
@@ -13,6 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 import { updateDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
 
 
 // ======= DOM Elements =======
@@ -138,9 +141,21 @@ closeModalBtn.addEventListener("click", () => {
   addPostModal.classList.add("hidden");
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const spinner = document.getElementById("global-spinner");
+  if (spinner) {
+    spinner.classList.add("hidden");
+  }
+});
+
+
+
+
 addPostForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!currentUser) return;
+
+  document.getElementById("global-spinner").classList.remove("hidden");
 
   const file = document.getElementById("image-file").files[0];
   const title = document.getElementById("post-title").value.trim();
@@ -169,13 +184,17 @@ addPostForm.addEventListener("submit", async (e) => {
       status: "available",
       takenBy: null,
       volunteerId: null
-    });    
+    });
 
     alert("The post was published successfully 🎉");
     addPostForm.reset();
     addPostModal.classList.add("hidden");
+
   } catch (error) {
     console.error("Error adding post:", error);
+    alert("Something went wrong while posting. Please try again.");
+  } finally {
+    document.getElementById("global-spinner").classList.add("hidden");
   }
 });
 
