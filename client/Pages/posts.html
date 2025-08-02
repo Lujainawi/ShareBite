@@ -142,29 +142,40 @@
   </div>
 
 
-
-  <!-- Custom Interested Modal -->
-  <div id="interested-modal" class="modal hidden">
+   <!-- Meal Receiving Option Modal -->
+   <div id="interested-modal" class="modal hidden">
     <div class="modal-content">
-      <h3>How do you want to take this post?</h3>
-      <p>Would you like to take it yourself or ask for a volunteer?</p>
-      <button id="take-myself-btn">Take Myself</button>
-      <button id="need-volunteer-btn">Need Volunteer</button>
-      <button id="close-interested-btn">Cancel</button>
+      <h3>🍽️ How would you like to receive this meal?</h3>
+      <p>Would you like to pick it up yourself or ask for a volunteer to help?</p>
+      <div class="modal-buttons">
+        <button id="take-myself-btn">I'll Pick It Up</button>
+        <button id="need-volunteer-btn">Need Volunteer</button>
+        <button id="cancel-modal-btn" class="cancel">Cancel</button>
+      </div>
     </div>
-  </div> 
+  </div>
+
   
   <!-- Global Loading Spinner -->
-<div id="global-spinner" class="hidden">
-  <div class="loader"></div>
-</div>
-
-<!-- Modal להצגת פרטי המפרסם -->
-<div id="contact-modal" class="modal hidden">
-  <div class="modal-content" id="contact-modal-content">
-    <!-- נעדכן את התוכן פה ב-JS -->
+  <div id="global-spinner" class="hidden">
+    <div class="loader"></div>
   </div>
-</div>
+  
+  <!-- Modal להצגת פרטי המפרסם -->
+  <div id="contact-modal" class="modal hidden">
+    <div class="modal-content" id="contact-modal-content">
+      <!-- נעדכן את התוכן פה ב-JS -->
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>🎉 Volunteer Request Sent!</h3>
+      <p>A volunteer will contact you soon.</p>
+      <button onclick="document.getElementById('confirmation-modal').classList.add('hidden')">OK</button>
+    </div>
+  </div>
 
 </body>
 

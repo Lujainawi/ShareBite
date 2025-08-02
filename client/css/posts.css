@@ -272,6 +272,45 @@ nav button:hover {
   border: 1px solid #fff;
 }
 
+.modal .modal-content {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 2em;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.modal .modal-content button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 0.5em 1.2em;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1em;
+  transition: all 0.3s ease;
+}
+
+.modal .modal-content button:hover {
+  background: rgba(255,255,255,0.3);
+  border-color: #fff;
+}
+
+.modal-content {
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+
 /* ======== Custom Dropdown ======== */
 .custom-dropdown {
   position: relative;
@@ -362,6 +401,7 @@ nav button:hover {
 /*  Custom Interested Modal  */
 #interested-modal .modal-content {
   background: white;
+  color: #000;
   padding: 2em;
   border-radius: 10px;
   text-align: center;
@@ -369,6 +409,7 @@ nav button:hover {
 }
 
 #interested-modal button {
+  background: #222;
   margin: 0.5em;
   padding: 0.5em 1em;
   border: none;
@@ -377,8 +418,8 @@ nav button:hover {
 }
 
 #take-myself-btn { background: #222; color: #fff; }
-#need-volunteer-btn { background: #444; color: #fff; }
-#close-interested-btn { background: #999; color: #fff; }
+#need-volunteer-btn { background: #222; color: #fff; }
+#close-interested-btn { background: #222; color: #fff; }
 
 
 #contact-modal .modal-content {

@@ -21,5 +21,22 @@
     <h2>Posts Waiting for Volunteers</h2>
     <div id="volunteer-posts-container"></div>
   </main>
+
+  <!-- Contact Info Modal -->
+  <div id="contact-modal" class="modal hidden">
+    <div class="modal-content" id="contact-modal-content">
+    
+    </div>
+  </div>
+
+  <!-- Completion Confirmation Modal -->
+  <div id="done-confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>✅ Task Completed</h3>
+      <p>Thank you! The task has been marked as completed. ✅</p>
+      <button onclick="document.getElementById('done-confirmation-modal').classList.add('hidden')">OK</button>
+    </div>
+  </div>
+
 </body>
 </html>
