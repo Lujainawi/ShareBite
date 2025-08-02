@@ -78,17 +78,15 @@ function renderPosts(snapshot) {
 
     const expiry = post.expiry?.toDate();
     const now = new Date();
-    if (expiry && expiry < now) {
-      await deleteDoc(doc(db, "posts", docSnap.id));
-      return;
-    }
+    if (expiry && expiry < now) return;
+   
 
     const isOwner = currentUser && post.userId === currentUser.uid;
 
     const statusClass = getStatusClass(post.status);
 
     postsContainer.innerHTML += `
-      <div class="flip-card ${statusClass}" onclick="flipCard(this)">
+      <div class="flip-card ${statusClass}" onclick="flipCard(this, event)">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="${post.imageUrl}" alt="Food Image">
@@ -314,7 +312,10 @@ function getStatusClass(status) {
   }
 }
 
-window.flipCard = function(cardElement) {
+window.flipCard = function(cardElement, event) {
+  if (event && (event.target.closest("button") || event.target.tagName === "BUTTON")) {
+    return; 
+  }
   const inner = cardElement.querySelector('.flip-card-inner');
   inner.classList.toggle('is-flipped');
 };

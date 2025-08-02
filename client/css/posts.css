@@ -114,10 +114,15 @@ nav button:hover {
 /* ======== Flip Cards ======== */
 .flip-card {
   background: transparent;
-  width: 300px;   /* גדלים מעודכנים */
+  width: 300px;  
   height: 380px;
   perspective: 1000px;
   margin: 1em;
+  cursor: pointer;
+}
+
+.flip-card:hover .flip-card-inner {
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.25);
 }
 
 .flip-card-inner {
@@ -177,10 +182,6 @@ nav button:hover {
   margin: 0.4em 0;
 }
 
-.flip-card-back button {
-  margin-top: 0.8em;
-}
-
 .interested-btn {
   background: #222;
   color: #fff;
@@ -201,6 +202,7 @@ nav button:hover {
   color: #222;
   padding: 0.5em 1em;
   border-radius: 4px;
+  margin-top: 0.8em;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
 }
@@ -262,16 +264,12 @@ nav button:hover {
   margin-right: 0.5em;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s, border 0.3s;
+  transition: all 0.3s ease;
 }
 
 .modal form button:hover {
   background: rgba(255,255,255,0.3);
   border: 1px solid #fff;
-}
-
-.hidden {
-  display: none;
 }
 
 /* ======== Custom Dropdown ======== */
