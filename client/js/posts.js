@@ -79,14 +79,13 @@ function renderPosts(snapshot) {
     const expiry = post.expiry?.toDate();
     const now = new Date();
     if (expiry && expiry < now) return;
-   
 
     const isOwner = currentUser && post.userId === currentUser.uid;
-
     const statusClass = getStatusClass(post.status);
 
+    // הוספת data-id לזיהוי ייחודי של הכרטיס
     postsContainer.innerHTML += `
-      <div class="flip-card ${statusClass}" onclick="flipCard(this, event)">
+      <div class="flip-card ${statusClass}" data-id="${docSnap.id}" onclick="flipCard(this, event)">
         <div class="flip-card-inner">
           <div class="flip-card-front">
             <img src="${post.imageUrl}" alt="Food Image">
@@ -100,13 +99,14 @@ function renderPosts(snapshot) {
             ${isOwner ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
             ${!isOwner && post.status === "available"
               ? `<button class="interested-btn" onclick="handleInterested('${docSnap.id}')">I’m interested</button>`
-              : ""}                     
+              : ""}
           </div>
         </div>
       </div>
     `;
   });
 }
+
 
 // ======= Delete Post =======
 window.deletePost = async function(postId) {
@@ -264,14 +264,40 @@ window.handleInterested = async function(postId) {
   const modal = document.getElementById("interested-modal");
   modal.classList.remove("hidden");
 
-  document.getElementById("take-myself-btn").onclick = async () => {
-    await updateDoc(doc(db, "posts", postId), {
-      status: "taken-by-owner",
-      takenBy: currentUser.uid
-    });
-    alert("You have reserved this post to take yourself!");
-    modal.classList.add("hidden");
-  };
+document.getElementById("take-myself-btn").onclick = async () => {
+  const postRef = doc(db, "posts", postId);
+  const postSnap = await getDoc(postRef);
+  const postData = postSnap.data();
+
+  await updateDoc(postRef, {
+    status: "taken-by-owner",
+    takenBy: currentUser.uid
+  });
+
+  const userRef = doc(db, "users", postData.userId);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+
+  // סגירת מודל הבחירה
+  modal.classList.add("hidden");
+
+  // פתיחת מודל חדש להצגת פרטי המפרסם
+  const contactModal = document.getElementById("contact-modal");
+  const contactContent = document.getElementById("contact-modal-content");
+
+  contactContent.innerHTML = `
+    <h3>Contact the Donor</h3>
+    <p><strong>Name:</strong> ${userData.name}</p>
+    <p><strong>Phone Number:</strong> ${userData.phone}</p>
+    <p><strong>Location:</strong> ${postData.location}</p>
+    <button onclick="window.location.href='tel:${userData.phone}'">📞 Call Now</button>
+    <button onclick="document.getElementById('contact-modal').classList.add('hidden')">Close</button>
+  `;
+
+  contactModal.classList.remove("hidden");
+};
+
+
 
   document.getElementById("need-volunteer-btn").onclick = async () => {
     const postRef = doc(db, "posts", postId);

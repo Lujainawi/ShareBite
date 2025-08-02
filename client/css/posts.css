@@ -379,3 +379,27 @@ nav button:hover {
 #take-myself-btn { background: #222; color: #fff; }
 #need-volunteer-btn { background: #444; color: #fff; }
 #close-interested-btn { background: #999; color: #fff; }
+
+
+#contact-modal .modal-content {
+  background: white;
+  padding: 2em;
+  border-radius: 10px;
+  text-align: left;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+#contact-modal p {
+  margin: 0.5em 0;
+}
+
+#contact-modal button {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  margin-top: 1em;
+  cursor: pointer;
+}
