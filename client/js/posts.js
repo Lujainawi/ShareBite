@@ -97,9 +97,10 @@ function renderPosts(snapshot) {
             <p><strong>Location:</strong> ${post.location}</p>
             <p><strong>Expiry:</strong> ${expiry?.toLocaleString()}</p>
             ${isOwner ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
-            ${!isOwner && post.status === "available"
-              ? `<button class="interested-btn" onclick="handleInterested('${docSnap.id}')">I’m interested</button>`
-              : ""}
+${!isOwner && (post.status === "available" || post.status === "taken-by-owner")
+  ? `<button class="interested-btn" onclick="handleInterested('${docSnap.id}')">I’m interested</button>`
+  : ""}
+
           </div>
         </div>
       </div>
@@ -269,11 +270,6 @@ document.getElementById("take-myself-btn").onclick = async () => {
   const postSnap = await getDoc(postRef);
   const postData = postSnap.data();
 
-  await updateDoc(postRef, {
-    status: "taken-by-owner",
-    takenBy: currentUser.uid
-  });
-
   const userRef = doc(db, "users", postData.userId);
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
@@ -281,7 +277,7 @@ document.getElementById("take-myself-btn").onclick = async () => {
   // סגירת מודל הבחירה
   modal.classList.add("hidden");
 
-  // פתיחת מודל חדש להצגת פרטי המפרסם
+  // פתיחת מודל עם פרטי המפרסם
   const contactModal = document.getElementById("contact-modal");
   const contactContent = document.getElementById("contact-modal-content");
 
@@ -295,8 +291,17 @@ document.getElementById("take-myself-btn").onclick = async () => {
   `;
 
   contactModal.classList.remove("hidden");
-};
 
+  // מחיקה מיידית אחרי שהמודל נפתח
+  setTimeout(async () => {
+    try {
+      await deleteDoc(postRef);
+      console.log("✅ Post deleted immediately after contact shown.");
+    } catch (err) {
+      console.error("❌ Deletion failed:", err);
+    }
+  }, 500);
+};
 
 
   document.getElementById("need-volunteer-btn").onclick = async () => {
@@ -330,13 +335,13 @@ document.getElementById("take-myself-btn").onclick = async () => {
 // Status for posts
 function getStatusClass(status) {
   switch (status) {
-    case "taken-by-owner": return "gray-card";
     case "waiting-volunteer": return "yellow-card";
     case "in-progress": return "blue-card";
     case "done": return "green-card";
     default: return "";
   }
 }
+
 
 window.flipCard = function(cardElement, event) {
   if (event && (event.target.closest("button") || event.target.tagName === "BUTTON")) {
@@ -345,3 +350,190 @@ window.flipCard = function(cardElement, event) {
   const inner = cardElement.querySelector('.flip-card-inner');
   inner.classList.toggle('is-flipped');
 };
+
+
+// client/js/posts/posts.js
+// // client/js/posts/posts.js
+
+// import { auth, db } from "../../src/firebase.js";
+// import {
+//   collection,
+//   addDoc,
+//   serverTimestamp,
+//   onSnapshot,
+//   query,
+//   where,
+//   doc,
+//   getDoc,
+//   deleteDoc,
+//   updateDoc
+// } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+// import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+// const welcomeMsg = document.getElementById("welcome-message");
+// const logoutBtn = document.getElementById("logout-btn");
+// const addPostBtn = document.getElementById("add-post-btn");
+// const addPostModal = document.getElementById("add-post-modal");
+// const addPostForm = document.getElementById("add-post-form");
+// const closeModalBtn = document.getElementById("close-modal-btn");
+// const postsContainer = document.getElementById("posts-container");
+// const myPostsBtn = document.getElementById("my-posts-btn");
+// const allPostsBtn = document.getElementById("all-posts-btn");
+
+// let currentUser = null;
+
+// onAuthStateChanged(auth, async (user) => {
+//   if (user) {
+//     currentUser = user;
+//     const userDocRef = doc(db, "users", user.uid);
+//     const userSnap = await getDoc(userDocRef);
+//     let name = user.email;
+//     if (userSnap.exists()) {
+//       name = userSnap.data().name;
+//     }
+//     welcomeMsg.textContent = `Hello, ${name}`;
+//     loadPosts();
+//   } else {
+//     window.location.href = "../pages/signIn.html";
+//   }
+// });
+
+// let selectedLocation = "";
+
+// function loadPosts() {
+//   const postsRef = collection(db, "posts");
+//   onSnapshot(postsRef, (snapshot) => {
+//     renderPosts(snapshot);
+//   });
+// }
+
+// function renderPosts(snapshot) {
+//   postsContainer.innerHTML = "";
+
+//   snapshot.forEach(async docSnap => {
+//     const post = docSnap.data();
+//     if (post.isDeleted) return;
+
+//     if (
+//       selectedLocation &&
+//       post.location?.trim().toLowerCase() !== selectedLocation.trim().toLowerCase()
+//     ) return;
+
+//     const expiry = post.expiry?.toDate();
+//     const now = new Date();
+//     if (expiry && expiry < now) return;
+
+//     const isOwner = currentUser && post.userId === currentUser.uid;
+//     const statusClass = getStatusClass(post.status);
+
+//     postsContainer.innerHTML += `
+//       <div class="flip-card ${statusClass}" data-id="${docSnap.id}" onclick="flipCard(this, event)">
+//         <div class="flip-card-inner">
+//           <div class="flip-card-front">
+//             <img src="${post.imageUrl}" alt="Food Image">
+//           </div>
+//           <div class="flip-card-back">
+//             <h3>${post.title}</h3>
+//             <p><strong>Posted by:</strong> ${post.userName || "Unknown"}</p>
+//             <p>${post.description}</p>
+//             <p><strong>Location:</strong> ${post.location}</p>
+//             <p><strong>Expiry:</strong> ${expiry?.toLocaleString()}</p>
+//             ${isOwner ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
+//             ${!isOwner && post.status === "available"
+//               ? `<button class="interested-btn" onclick="handleInterested('${docSnap.id}')">I’m interested</button>`
+//               : ""}
+//           </div>
+//         </div>
+//       </div>
+//     `;
+//   });
+// }
+
+// window.deletePost = async function(postId) {
+//   if (confirm("Are you sure you want to delete this post?")) {
+//     await deleteDoc(doc(db, "posts", postId));
+//   }
+// };
+
+// window.handleInterested = async function(postId) {
+//   if (!currentUser) {
+//     if (confirm("You need to sign in first to show interest. Go to sign up?")) {
+//       window.location.href = "../pages/signUp.html";
+//     }
+//     return;
+//   }
+
+//   const modal = document.getElementById("interested-modal");
+//   modal.classList.remove("hidden");
+
+//   document.getElementById("take-myself-btn").onclick = async () => {
+//     const postRef = doc(db, "posts", postId);
+//     const postSnap = await getDoc(postRef);
+//     const postData = postSnap.data();
+
+//     const userRef = doc(db, "users", postData.userId);
+//     const userSnap = await getDoc(userRef);
+//     const userData = userSnap.data();
+
+//     modal.classList.add("hidden");
+
+//     const contactModal = document.getElementById("contact-modal");
+//     const contactContent = document.getElementById("contact-modal-content");
+
+//     contactContent.innerHTML = `
+//       <h3>Contact the Donor</h3>
+//       <p><strong>Name:</strong> ${userData.name}</p>
+//       <p><strong>Phone Number:</strong> ${userData.phone}</p>
+//       <p><strong>Location:</strong> ${postData.location}</p>
+//       <button onclick="window.location.href='tel:${userData.phone}'">📞 Call Now</button>
+//       <button onclick="document.getElementById('contact-modal').classList.add('hidden')">Close</button>
+//     `;
+
+//     contactModal.classList.remove("hidden");
+
+//     try {
+//       await deleteDoc(postRef);
+//       console.log("✅ Post deleted immediately after take-myself.");
+//     } catch (err) {
+//       console.error("❌ Deletion failed:", err);
+//     }
+//   };
+
+//   document.getElementById("need-volunteer-btn").onclick = async () => {
+//     const postRef = doc(db, "posts", postId);
+//     const postSnap = await getDoc(postRef);
+//     const postData = postSnap.data();
+
+//     await updateDoc(postRef, {
+//       ...postData,
+//       needsVolunteer: true,
+//       status: "waiting-volunteer",
+//       takenBy: null,
+//       volunteerId: null
+//     });
+
+//     alert("Volunteer request sent! A volunteer will contact you soon.");
+//     modal.classList.add("hidden");
+//   };
+
+//   document.getElementById("close-interested-btn").onclick = () => {
+//     modal.classList.add("hidden");
+//   };
+// };
+
+// function getStatusClass(status) {
+//   switch (status) {
+//     case "waiting-volunteer": return "yellow-card";
+//     case "in-progress": return "blue-card";
+//     case "done": return "green-card";
+//     default: return "";
+//   }
+// }
+
+// window.flipCard = function(cardElement, event) {
+//   if (event && (event.target.closest("button") || event.target.tagName === "BUTTON")) {
+//     return;
+//   }
+//   const inner = cardElement.querySelector('.flip-card-inner');
+//   inner.classList.toggle('is-flipped');
+// };

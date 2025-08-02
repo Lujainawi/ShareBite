@@ -403,3 +403,8 @@ nav button:hover {
   margin-top: 1em;
   cursor: pointer;
 }
+
+.gray-image {
+  filter: grayscale(100%);
+  opacity: 0.8;
+}
