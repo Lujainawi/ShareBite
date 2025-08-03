@@ -76,6 +76,8 @@ nav button:hover {
   align-items: center;
   gap: 1em;
   color: #fff;
+  position: relative;  
+  z-index: 30000;  
 }
 
 .filter-bar .custom-dropdown {
@@ -96,6 +98,7 @@ nav button:hover {
   font-size: 28px;
   cursor: pointer;
   transition: background 0.3s, color 0.3s;
+  z-index: 2000;
 }
 
 .add-btn:hover {
@@ -115,10 +118,12 @@ nav button:hover {
 .flip-card {
   background: transparent;
   width: 300px;  
-  height: 380px;
+  height: auto;
+  min-height: 380px;
   perspective: 1000px;
   margin: 1em;
   cursor: pointer;
+  overflow: visible;
 }
 
 .flip-card:hover .flip-card-inner {
@@ -163,23 +168,59 @@ nav button:hover {
   position: absolute;
   width: 100%;
   height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 12px;
   overflow: hidden;
-  backface-visibility: hidden;
   background: #fff;
   color: #333;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.flip-card-front {
+  padding: 0; 
+}
+
+.flip-card-back {
+  padding: 1.5em; 
 }
 
 .flip-card-back {
   transform: rotateY(180deg);
-  padding: 1.5em;
+  padding: 1.8em 1.5em;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95em;
+  line-height: 1.6;
+  background: #fff;
+  color: #222;
+}
+
+.flip-card-back h3 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  font-weight: 600;
+  color: #111;
 }
 
 .flip-card-back p {
   margin: 0.4em 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3em;
+}
+.flip-card-back p strong {
+  display: inline-block;
+  min-width: 110px;
+  font-weight: 600;
+  color: #444;
+}
+.flip-card-back p span {
+  flex: 1;
+  color: #000;
 }
 
 .interested-btn {
@@ -197,14 +238,18 @@ nav button:hover {
 }
 
 .flip-card-back button {
-  background: transparent;
+  margin-top: auto;
+  align-self: center;
+  background: #fff;
   border: 1px solid #222;
   color: #222;
-  padding: 0.5em 1em;
-  border-radius: 4px;
+  padding: 0.5em 1.2em;
+  border-radius: 8px;
   margin-top: 0.8em;
+  font-size: 0.95em;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .flip-card-back button:hover {
@@ -233,6 +278,7 @@ nav button:hover {
   border-radius: 12px;
   width: 320px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  margin-top: 80px;
 }
 
 .modal form label {
@@ -320,6 +366,8 @@ nav button:hover {
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
+  z-index: 10000;
+  overflow: visible;
 }
 
 .selected-option {
@@ -337,7 +385,7 @@ nav button:hover {
   max-height: 200px;
   overflow-y: auto;
   border-radius: 0 0 10px 10px;
-  z-index: 1000;
+  z-index: 20000;
 }
 
 .dropdown-options .option {
@@ -349,21 +397,29 @@ nav button:hover {
   background: #eee;
 }
 
-.gray-card .flip-card-inner {
+.gray-card {
   filter: grayscale(100%);
   opacity: 0.7;
+  border: 2px solid #aaa;
+  border-radius: 12px;
 }
 
-.yellow-card .flip-card-inner {
+.flip-card-inner.yellow-card{
   border: 2px solid yellow;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.4);
 }
 
-.blue-card .flip-card-inner {
+.flip-card-inner.blue-card {
   border: 2px solid skyblue;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(135, 206, 250, 0.4);
 }
 
-.green-card .flip-card-inner {
+.flip-card-inner.green-card {
   border: 2px solid lightgreen;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(144, 238, 144, 0.4);
 }
 
 #global-spinner {
@@ -407,6 +463,11 @@ nav button:hover {
   text-align: center;
   max-width: 400px;
 }
+#contact-modal .modal-content h3,
+#contact-modal .modal-content p,
+#contact-modal .modal-content strong {
+  color: #000;
+}
 
 #interested-modal button {
   background: #222;
@@ -443,4 +504,55 @@ nav button:hover {
   border-radius: 5px;
   margin-top: 1em;
   cursor: pointer;
+}
+
+/* Button Puplish (+) */
+.custom-success-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #fff;
+  padding: 1.2em 2em;
+  border-radius: 12px;
+  font-size: 1.1em;
+  font-weight: 500;
+  z-index: 5000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: fadeInScale 0.3s ease;
+}
+
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.9) translate(-50%, -50%); }
+  100% { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+}
+
+.custom-success-modal .success-content {
+  text-align: center;
+}
+
+/* ADD NEW POST */
+.form-header {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.form-header h2 {
+  margin: 0.2em 0;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #fff;
+}
+
+.form-header .form-intro {
+  margin-bottom: 0.5em;
+  font-size: 0.95em;
+  color: #ddd;
+}
+
+#add-post-modal .modal form {
+  margin-top: 5em;
 }

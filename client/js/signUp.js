@@ -19,8 +19,19 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   const isBusiness = document.getElementById("isBusiness").checked;
   const isVolunteer = document.getElementById("isVolunteer").checked;
 
-  const errorDiv = document.getElementById("error-message");
-  errorDiv.textContent = ""; // Clear previous errors
+  function showMessage(text, type = "error") {
+    const box = document.getElementById("message-box");
+    box.textContent = text;
+    box.className = "";
+    box.classList.add("message-box", type);
+    setTimeout(() => box.classList.add("hidden"), 4000);
+  }
+  
+
+  if (!fullName || !phone || !location || !email || !password) {
+    showMessage("Please fill in all fields.");
+    return;
+  }
 
   // ✅ Full Name validation
   if (
@@ -30,26 +41,26 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     fullName.split(" ").length < 2 ||
     /\s{2,}/.test(fullName)
   ) {
-    errorDiv.textContent = "Please enter a valid full name (2 words, letters only, no double spaces).";
+    showMessage("Please enter a valid full name (2 words, letters only, no double spaces).");
     return;
   }
 
   // ✅ Phone validation (Israel format)
   if (!/^[0-9]{10}$/.test(phone) || !phone.startsWith("05")) {
-    errorDiv.textContent = "Please enter a valid Israeli phone number (10 digits, starts with 05).";
+    showMessage("Please enter a valid Israeli phone number (10 digits, starts with 05).");
     return;
   }
 
   // ✅ Location validation
   if (!location) {
-    errorDiv.textContent = "Please select your location.";
+    showMessage("Please select your location.");
     return;
   }
 
   // ✅ Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    errorDiv.textContent = "Please enter a valid email address.";
+    showMessage("Please enter a valid email address.");
     return;
   }
 
@@ -62,7 +73,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   if (!/[!@#$%^&*]/.test(password)) pwdErrors.push("one special character");
 
   if (pwdErrors.length) {
-    errorDiv.textContent = "Password must contain: " + pwdErrors.join(", ");
+    showMessage("Password must contain: " + pwdErrors.join(", "));
     return;
   }
 
@@ -84,7 +95,13 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     });
 
     console.log("User added to Firestore!");
-    alert("Sign up successful!");
+    showMessage("Signed up successfully!", "success");
+    setTimeout(() => {
+      window.location.href = isVolunteer
+      ? "../pages/volunteerTasks.html"
+      : "../pages/posts.html";
+    }, 1200);
+
     if (isVolunteer) {
       window.location.href = "../pages/volunteerTasks.html";
     } else {
