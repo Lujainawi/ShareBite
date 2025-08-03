@@ -243,6 +243,16 @@ addPostForm.addEventListener("submit", async (e) => {
   const expiryTime = document.getElementById("post-expiry-time").value;
   const expiryDateTime = new Date(`${expiryDate}T${expiryTime}:00`);
 
+   const now = new Date();
+  const expiryError = document.getElementById("expiry-error");
+  expiryError.textContent = ""; // Clear old error
+  if (expiryDateTime <= now) {
+    expiryError.textContent = "⏳ Please choose a future date and time.";
+    document.getElementById("global-spinner").classList.add("hidden");
+    return;
+  }
+
+
   try {
     const imageUrl = await uploadImage(file);
 
@@ -366,7 +376,6 @@ document.getElementById("take-myself-btn").onclick = async () => {
   const postSnap = await getDoc(postRef);
   const postData = postSnap.data();
 
-
   const userRef = doc(db, "users", postData.userId);
   const userSnap = await getDoc(userRef);
   const userData = userSnap.data();
@@ -392,7 +401,11 @@ document.getElementById("take-myself-btn").onclick = async () => {
   `;
 
   contactModal.classList.remove("hidden");
+
+  
+  await deleteDoc(postRef);
 };
+
 
 console.log("Current user:", currentUser.uid);
 console.log("Trying to update:", { needsVolunteer: true, status: "waiting-volunteer" });

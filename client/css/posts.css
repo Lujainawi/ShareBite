@@ -700,3 +700,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* הופך צבע שחור ללבן */
   cursor: pointer;
 }
+
+.form-error {
+  color: #f87171; /* Tailwind-style red */
+  font-size: 0.875rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
