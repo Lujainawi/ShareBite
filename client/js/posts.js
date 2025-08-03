@@ -113,11 +113,36 @@ function renderPosts(snapshot) {
 
 
 // ======= Delete Post =======
-window.deletePost = async function(postId) {
-  if (confirm("Are you sure you want to delete this post?")) {
-    await deleteDoc(doc(db, "posts", postId));
-  }
+let postToDeleteId = null;
+
+window.deletePost = function(postId) {
+  postToDeleteId = postId;
+  document.getElementById("delete-confirmation-modal").classList.remove("hidden");
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  // כפתור אישור מחיקה
+  const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+  const cancelDeleteBtn = document.getElementById("cancel-delete-btn");
+
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.onclick = async () => {
+      if (postToDeleteId) {
+        await deleteDoc(doc(db, "posts", postToDeleteId));
+        postToDeleteId = null;
+        document.getElementById("delete-confirmation-modal").classList.add("hidden");
+      }
+    };
+  }
+
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.onclick = () => {
+      postToDeleteId = null;
+      document.getElementById("delete-confirmation-modal").classList.add("hidden");
+    };
+  }
+});
+
 
 // ======= Upload Image =======
 async function uploadImage(file) {
