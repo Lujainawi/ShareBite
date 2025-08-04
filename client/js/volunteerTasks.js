@@ -17,15 +17,25 @@ const postsContainer = document.getElementById("volunteer-posts-container");
 
 let currentUser = null;
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    welcomeMsg.textContent = `Hello, ${user.email}`;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userDocRef);
+    let name = user.email;
+
+    if (userSnap.exists()) {
+      name = userSnap.data().name || user.email;
+    }
+
+    welcomeMsg.textContent = `Hello, ${name}`;
     loadVolunteerPosts();
   } else {
     window.location.href = "../pages/signIn.html";
   }
 });
+
 
 logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
@@ -43,8 +53,15 @@ function loadVolunteerPosts() {
   const q = query(collection(db, "posts"), where("needsVolunteer", "==", true));
   onSnapshot(q, (snapshot) => {
     postsContainer.innerHTML = "";
+
+    const now = new Date();
+
     snapshot.forEach(docSnap => {
       const post = docSnap.data();
+
+      const expiry = post.expiry?.toDate();
+      if ((expiry && expiry < now) || post.status === "done") return;
+      
       postsContainer.innerHTML += `
         <div class="volunteer-card" data-id="${docSnap.id}">
         <h3>${post.title}</h3>
@@ -72,7 +89,11 @@ window.acceptVolunteer = async function(postId) {
   const receiverSnap = await getDoc(doc(db, "users", postData.requestedBy));
   const receiver = receiverSnap.exists() ? receiverSnap.data() : null;
 
-  let message = `<h3>Are you sure you want to take this task? 🤝</h3><hr/>`;
+  let message = `
+  <h3>Are you sure you want to take this task? 🤝</h3>
+  <hr/>
+`;
+
 
   if (donor) {
     message += `

@@ -1,14 +1,16 @@
-/* ======== בסיס ======== */
+/* ======== body======== */
 body {
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-    margin: 0;
-    padding-top: 80px;
-    font-family: 'Arial', sans-serif;
-  }
+  background: linear-gradient(135deg, #222 0%, #333 100%);
+  margin: 0;
+  padding-top: 80px;     
+  font-family: 'Arial', sans-serif;
+}
   
   /* ======== Toolbar ======== */
   header {
-    background: rgba(34, 34, 34, 0.9);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #fff;
     padding: 1.2em 2em;
     display: flex;
@@ -18,7 +20,8 @@ body {
     top: 0;
     width: 100%;
     z-index: 100;
-  }
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  }  
   
   header span {
     font-weight: 600;
@@ -30,6 +33,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 0.5em;
+    padding-right: 2em;
   }
   
   nav button {
@@ -37,53 +41,98 @@ body {
     color: #fff;
     border: 1px solid #fff;
     padding: 0.5em 1em;
+    margin: 0.3em;
     border-radius: 30px;
     cursor: pointer;
-    transition: background 0.3s;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
   }
   
   nav button:hover {
     background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }  
+
+  /* ======== Post Title ======== */
+  .page-title {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #f5f5f5;
+    margin: 2em 0 1em 0;
+    font-family: 'Segoe UI', sans-serif;
   }
+  
   
   /* ======== Volunteer Cards ======== */
   .volunteer-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
+    background: #fffdfa;
+    border: 1px solid #ddd;
+    border-radius: 16px;
     padding: 1.5em;
     margin: 1em;
-    width: 300px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    width: 320px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    backdrop-filter: blur(10px);
+    color: #f1f1f1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .volunteer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.15);
   }
   
   .volunteer-card h3 {
     margin-top: 0;
-    margin-bottom: 0.5em;
-    color: #222;
+    margin-bottom: 0.6em;
+    font-size: 1.3em;
+    color: #111;
+    text-align: center;
   }
   
   .volunteer-card p {
-    margin: 0.3em 0;
+    margin: 0.4em 0;
+    font-size: 0.95em;
     color: #333;
+    line-height: 1.5;
+  }
+  
+  .volunteer-card p strong {
+    color: #000;
+    font-weight: 600;
   }
   
   .volunteer-card button {
-    margin-top: 1em;
-    padding: 0.5em 1em;
+    margin-top: 1.2em;
+    padding: 0.6em 1.2em;
     background: #222;
     color: #fff;
     border: none;
     border-radius: 30px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, color 0.3s;
   }
   
   .volunteer-card button:hover {
     background: #444;
   }
+  
+  .status-label {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+    padding: 0.4em 1em;
+    border-radius: 20px;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-bottom: 0.6em;
+    text-align: center;
+  }   
   
   /* ======== Container ======== */
   #volunteer-posts-container {
@@ -146,5 +195,115 @@ body {
   .hidden {
     display: none !important;
   }
+
+  /* ======== Contact Modal ======== */
+  #contact-modal .modal-content {
+    background: #fffdfa;
+    color: #111;
+    padding: 2em;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 460px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1em;
+  }
   
+  #contact-modal .modal-content h3 {
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  
+  #contact-modal .modal-content h4 {
+    margin-top: 1.2em;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  #contact-modal .modal-content p {
+    margin: 0.5em 0;
+    line-height: 1.5;
+  }
+  
+  #contact-modal .modal-content hr {
+    border: none;
+    height: 1px;
+    background-color: #ccc;
+    margin: 1.2em 0;
+  }
+  
+  #contact-modal .modal-content button {
+    margin: 0.6em 0.5em 0 0;
+    padding: 0.5em 1.2em;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.95em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  #contact-modal .modal-content button:first-of-type {
+    background: #222;
+    color: #fff;
+  }
+  
+  #contact-modal .modal-content button:first-of-type:hover {
+    background: #444;
+  }
+  
+  #contact-modal .modal-content button:last-of-type {
+    background: #ddd;
+    color: #111;
+  }
+  
+  #contact-modal .modal-content button:last-of-type:hover {
+    background: #ccc;
+  }
+  
+  /* ======== Done Confirmation Modal ======== */
+  #done-confirmation-modal .modal-content {
+    background: #fffdfa;
+    padding: 2em;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    font-family: 'Segoe UI', sans-serif;
+    color: #111;
+  }
+  
+  #done-confirmation-modal .modal-content h3 {
+    font-size: 1.6em;
+    color: #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    margin-bottom: 0.8em;
+  }
+  
+  #done-confirmation-modal .modal-content p {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 1.5em;
+  }
+  
+  #done-confirmation-modal .modal-content button {
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 0.6em 1.4em;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background 0.3s;
+  }
+  
+  #done-confirmation-modal .modal-content button:hover {
+    background: #444;
+  }
   
