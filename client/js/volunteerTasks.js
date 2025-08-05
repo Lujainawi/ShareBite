@@ -25,6 +25,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
+// Detects whether a given text contains Hebrew characters
+function isHebrew(text) {
+  return /[\u0590-\u05FF]/.test(text);
+}
+
 // ===== DOM Elements =====
 const welcomeMsg = document.getElementById("welcome-message");
 const logoutBtn = document.getElementById("logout-btn");
@@ -84,9 +89,12 @@ function loadVolunteerPosts() {
       // Skip expired or already completed posts
       if ((expiry && expiry < now) || post.status === "done") return;
       
+      const direction = isHebrew(post.title + post.description) ? 'rtl' : 'ltr';
+      const textAlign = direction === 'rtl' ? 'right' : 'left';
+
       // Append card with task info
       postsContainer.innerHTML += `
-        <div class="volunteer-card" data-id="${docSnap.id}">
+        <div class="volunteer-card" data-id="${docSnap.id}" style="direction: ${direction}; text-align: ${textAlign};">
         <h3>${post.title}</h3>
         <p class="status-label">⏳ Waiting for Volunteer</p>
         <p>${post.description}</p>
@@ -94,7 +102,7 @@ function loadVolunteerPosts() {
         <p><strong>Requested by:</strong> ${post.requestedByName || "Unknown"}</p>
         <button onclick="acceptVolunteer('${docSnap.id}')">Accept Task</button>
         </div>
-        `;  
+        `;
     });
   });
 }
