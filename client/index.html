@@ -96,7 +96,9 @@
           <li>
             <a id="find-meal-signin-btn" href="/pages/signIn.html" class="button primary">Sign In</a>    </li>
     <li>
-      <a id="find-meal-guest-btn" href="/pages/posts.html?guest=true" class="button">Continue as Guest</a>
+      <a id="find-meal-guest-btn" href="/pages/posts.html?guest=true" class="button">
+        Continue as Guest / User
+      </a>
     </li>
         </ul>
       </article>
@@ -161,6 +163,13 @@
 
   <!-- BG -->
   <div id="bg"></div>
+
+  <!-- Success Modal -->
+  <div id="entry-notice-modal" class="custom-entry-modal hidden">
+    <div class="modal-content">
+      <p id="entry-notice-text"></p>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="/assets/js/jquery.min.js"></script>

@@ -17,6 +17,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
+// Detects whether a given text contains Hebrew characters.
+// This is used to dynamically set the direction (RTL or LTR)
+// for post cards, so that Hebrew content is displayed correctly.
+function isHebrew(text) {
+  return /[\u0590-\u05FF]/.test(text);
+}
 
 const urlParams = new URLSearchParams(window.location.search);
 const guestMode = urlParams.get("guest") === "true";
@@ -110,13 +116,16 @@ function renderPosts(snapshot) {
     const isOwner = currentUser && post.userId === currentUser.uid;
     const statusClass = getStatusClass(post.status);
 
+    const direction = isHebrew(post.title + post.description) ? 'rtl' : 'ltr';
+    const textAlign = direction === 'rtl' ? 'right' : 'left';
+
     postsContainer.innerHTML += `
-    <div class="flip-card" data-id="${docSnap.id}" onclick="flipCard(this, event)">
-      <div class="flip-card-inner ${statusClass}">
-        <div class="flip-card-front">
-          <img src="${post.imageUrl}" alt="Food Image">
+      <div class="flip-card" data-id="${docSnap.id}" onclick="flipCard(this, event)">
+        <div class="flip-card-inner ${statusClass}">
+         <div class="flip-card-front">
+            <img src="${post.imageUrl}" alt="Food Image">
         </div>
-        <div class="flip-card-back">
+        <div class="flip-card-back" style="direction: ${direction}; text-align: ${textAlign};">
           <h3>${post.title}</h3>
           <p><strong>Posted by:</strong> <span>${post.userName || "Unknown"}</span></p>
           <p><span>${post.description}</span></p>

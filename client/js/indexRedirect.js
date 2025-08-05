@@ -8,18 +8,56 @@ document.addEventListener("DOMContentLoaded", () => {
   // Grab buttons by their IDs (defined in index.html)
   const guestBtn = document.getElementById("find-meal-guest-btn");
   const volunteerBtn = document.getElementById("volunteer-entry-btn");
+  const userInfoMsg = document.getElementById("user-info-msg");
+
+  if (guestBtn) {
+    guestBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+  
+      const isGuest = !auth.currentUser;
+      const targetUrl = isGuest
+        ? "/pages/posts.html?guest=true"
+        : "/pages/posts.html";
+  
+      const modal = document.getElementById("entry-notice-modal");
+      const text = document.getElementById("entry-notice-text");
+  
+      text.textContent = isGuest
+        ? "You are entering as a Guest 👤"
+        : "Welcome back! You're entering as a signed-in user 🔐";
+  
+      modal.classList.add("show");
+      modal.classList.remove("hidden");
+  
+      setTimeout(() => {
+        modal.classList.remove("show");
+        modal.classList.add("hidden");
+        window.location.href = targetUrl;
+      }, 2500);
+    });
+  }
 
   onAuthStateChanged(auth, async (user) => {
-    if (!user) return;
+    if (!user) {
+      if (userInfoMsg) {
+        userInfoMsg.textContent = "You are not signed in. You’ll continue as a guest.";
+      }
+      return;
+    }
 
     try {
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
       const userData = userSnap.exists() ? userSnap.data() : {};
 
-      // Update guest access link if needed (optional)
+      const name = userData.name || user.email;
+
+      if (userInfoMsg) {
+        userInfoMsg.innerHTML = `You are currently signed in as <strong>${name}</strong>`;
+      }
+
       if (guestBtn) {
-        guestBtn.href = "/pages/posts.html"; // or keep ?guest=true if needed
+        guestBtn.href = "/pages/posts.html";
       }
 
       // Redirect volunteer button if user is marked as volunteer
