@@ -1,10 +1,13 @@
+// Responsible for redirecting homepage buttons based on user login state and role
+
 import { auth, db } from "../../src/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const findMealBtn = document.querySelector("a[href='/pages/Posts.html']");
-  const volunteerBtn = document.querySelector("a[href='/pages/signUp.html']");
+  // Grab buttons by their IDs (defined in index.html)
+  const guestBtn = document.getElementById("find-meal-guest-btn");
+  const volunteerBtn = document.getElementById("volunteer-entry-btn");
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) return;
@@ -14,17 +17,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const userSnap = await getDoc(userRef);
       const userData = userSnap.exists() ? userSnap.data() : {};
 
-      if (findMealBtn) {
-        findMealBtn.href = "/pages/posts.html";
+      // Update guest access link if needed (optional)
+      if (guestBtn) {
+        guestBtn.href = "/pages/posts.html"; // or keep ?guest=true if needed
       }
 
-      if (volunteerBtn && userData.isVolunteer) {
-        // מבטל את ההתנהגות הרגילה ומחליף ב־redirect
-        volunteerBtn.addEventListener("click", (e) => {
+      // Redirect volunteer button if user is marked as volunteer
+      if (volunteerBtn && userData.isVolunteer === true) {
+        // Remove any previous event listeners by replacing the button with a clone
+        volunteerBtn.replaceWith(volunteerBtn.cloneNode(true));
+      
+        // Get the new (clean) version of the button
+        const cleanVolunteerBtn = document.getElementById("volunteer-entry-btn");
+      
+        cleanVolunteerBtn.addEventListener("click", (e) => {
           e.preventDefault();
           window.location.href = "/pages/volunteerTasks.html";
         });
-      }
+      }      
 
     } catch (err) {
       console.error("Error checking user role:", err);

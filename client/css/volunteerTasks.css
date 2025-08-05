@@ -1,4 +1,8 @@
-/* ======== body======== */
+/*
+  Styles for the Volunteer Tasks page: toolbar, volunteer cards, modals, and general layout.
+*/
+
+/* ======== Body ======== */
 body {
   background: linear-gradient(135deg, #222 0%, #333 100%);
   margin: 0;
@@ -6,7 +10,7 @@ body {
   font-family: 'Arial', sans-serif;
 }
   
-  /* ======== Toolbar ======== */
+/* ======== Toolbar/Header ======== */
   header {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -53,7 +57,7 @@ body {
     color: #fff;
   }  
 
-  /* ======== Post Title ======== */
+/* ======== Page Title ======== */
   .page-title {
     text-align: center;
     font-size: 1.8em;
@@ -64,7 +68,7 @@ body {
   }
   
   
-  /* ======== Volunteer Cards ======== */
+/* ======== Volunteer Cards ======== */
   .volunteer-card {
     background: #fffdfa;
     border: 1px solid #ddd;
@@ -122,19 +126,21 @@ body {
     background: #444;
   }
   
+/* ======== Status Tag ======== */
   .status-label {
     background-color: #fff3cd;
     color: #856404;
-    font-weight: 600;
-    padding: 0.4em 1em;
+    font-weight: bold;
+    padding: 0.2em 0.6em;
     border-radius: 20px;
     font-size: 0.9em;
     display: inline-block;
-    margin-bottom: 0.6em;
+    margin: 0.3em 0;
+    margin-bottom: 0.9em;
     text-align: center;
   }   
   
-  /* ======== Container ======== */
+/* ======== Container Layout ======== */
   #volunteer-posts-container {
     display: flex;
     flex-wrap: wrap;
@@ -142,7 +148,7 @@ body {
     margin: 2em;
   }
   
-  /* ======== Status Colors ======== */
+/* ======== Status Color Variants ======== */
   .yellow-card {
     border: 2px solid yellow;
   }
@@ -160,16 +166,7 @@ body {
     opacity: 0.7;
   }
   
-  .status-label {
-    background-color: #fff3cd;
-    color: #856404;
-    font-weight: bold;
-    padding: 0.2em 0.6em;
-    border-radius: 20px;
-    display: inline-block;
-    margin: 0.3em 0;
-  }
-  
+/* ======== Modal Base ======== */  
   .modal {
     position: fixed;
     top: 0;
@@ -196,7 +193,7 @@ body {
     display: none !important;
   }
 
-  /* ======== Contact Modal ======== */
+/* ======== Contact Modal ======== */
   #contact-modal .modal-content {
     background: #fffdfa;
     color: #111;
@@ -262,7 +259,7 @@ body {
     background: #ccc;
   }
   
-  /* ======== Done Confirmation Modal ======== */
+/* ======== Done Confirmation Modal ======== */
   #done-confirmation-modal .modal-content {
     background: #fffdfa;
     padding: 2em;
@@ -306,4 +303,3 @@ body {
   #done-confirmation-modal .modal-content button:hover {
     background: #444;
   }
-  

@@ -1,3 +1,8 @@
+<!--
+  signIn.html
+  This page provides a login form for users to access ShareBite.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +15,9 @@
 
 </head>
 <body>
+  <!-- Fullscreen overlay background -->
   <div class="overlay">
+    <!-- Sign-in form container -->
     <div class="signup-box">
       <a href="../index.html" class="close-btn" aria-label="Close">✕</a>
       <h2>Sign In</h2>
@@ -25,6 +32,7 @@
           <button class="primary" type="submit">Sign In</button>
         </div>
         
+        <!-- Error and message display -->
         <div id="error-message" class="error-message"></div> 
         <div id="message-box" class="hidden"></div>       
       </form>

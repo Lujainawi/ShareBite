@@ -1,16 +1,19 @@
+// Handles user sign-up with email and password
+// Validates inputs and stores user data in Firestore
+
 import { auth, db } from "../src/firebase.js";
-import {
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import {createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 import {
   setDoc,
   doc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
+// === Sign-Up Form Handling ===
 document.getElementById("signup-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  // Get input values
   const fullName = document.getElementById("fullName").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const location = document.getElementById("location").value;
@@ -19,6 +22,7 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   const isBusiness = document.getElementById("isBusiness").checked;
   const isVolunteer = document.getElementById("isVolunteer").checked;
 
+  // Message display helper
   function showMessage(text, type = "error") {
     const box = document.getElementById("message-box");
     box.textContent = text;
@@ -27,13 +31,13 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     setTimeout(() => box.classList.add("hidden"), 4000);
   }
   
-
+  // === Validation ===
   if (!fullName || !phone || !location || !email || !password) {
     showMessage("Please fill in all fields.");
     return;
   }
 
-  // ✅ Full Name validation
+  // Full name validation
   if (
     fullName.length < 3 ||
     fullName.length > 40 ||
@@ -45,26 +49,26 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
     return;
   }
 
-  // ✅ Phone validation (Israel format)
+  // Phone number validation (Israeli format)
   if (!/^[0-9]{10}$/.test(phone) || !phone.startsWith("05")) {
     showMessage("Please enter a valid Israeli phone number (10 digits, starts with 05).");
     return;
   }
 
-  // ✅ Location validation
+  // Location validation
   if (!location) {
     showMessage("Please select your location.");
     return;
   }
 
-  // ✅ Email validation
+  // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     showMessage("Please enter a valid email address.");
     return;
   }
 
-  // ✅ Password validation
+  // Password validation
   let pwdErrors = [];
   if (password.length < 8) pwdErrors.push("at least 8 characters");
   if (!/[a-z]/.test(password)) pwdErrors.push("one lowercase letter");
@@ -78,11 +82,11 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
   }
 
   try {
+    // Register user with Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log("User created:", userCredential);
-
     const user = userCredential.user;
 
+    // Save user data in Firestore
     await setDoc(doc(db, "users", user.uid), {
       userId: user.uid,
       name: fullName,
@@ -94,39 +98,39 @@ document.getElementById("signup-form").addEventListener("submit", async (e) => {
       createdAt: serverTimestamp(),
     });
 
-    console.log("User added to Firestore!");
     showMessage("Signed up successfully!", "success");
+
+    // Redirect after short delay
     setTimeout(() => {
       window.location.href = isVolunteer
       ? "../pages/volunteerTasks.html"
       : "../pages/posts.html";
     }, 1200);
 
-    if (isVolunteer) {
-      window.location.href = "../pages/volunteerTasks.html";
-    } else {
-      window.location.href = "../pages/posts.html";
-    }
-
   } catch (error) {
-    console.error("Error during sign up:", error);
-    alert(error.message);
+    // Show user-friendly error
+    let msg = "Sign-up failed. Please try again.";
+    if (error.code === "auth/email-already-in-use") msg = "This email is already in use.";
+    if (error.code === "auth/weak-password") msg = "Password is too weak.";
+    if (error.code === "auth/invalid-email") msg = "Invalid email address.";
+
+    showMessage(msg, "error");
   }
 });
 
-// === Custom Dropdown Logic ===
+// === Custom Location Dropdown ===
 const customDropdown = document.getElementById("custom-location");
 const selectedOption = customDropdown.querySelector(".selected-option");
 const dropdownOptions = customDropdown.querySelector(".dropdown-options");
 const hiddenInput = document.getElementById("location");
 
-// Toggle dropdown
+// Toggle dropdown display
 selectedOption.addEventListener("click", () => {
   dropdownOptions.style.display =
     dropdownOptions.style.display === "block" ? "none" : "block";
 });
 
-// Pick option
+// Set selected location
 dropdownOptions.querySelectorAll(".option").forEach(option => {
   option.addEventListener("click", () => {
     selectedOption.textContent = option.textContent;
@@ -135,7 +139,7 @@ dropdownOptions.querySelectorAll(".option").forEach(option => {
   });
 });
 
-// Close dropdown when clicking outside
+// Hide dropdown when clicking outside
 document.addEventListener("click", (e) => {
   if (!customDropdown.contains(e.target)) {
     dropdownOptions.style.display = "none";

@@ -1,3 +1,18 @@
+// This script handles the logic for the volunteer tasks page.
+// Volunteers can view food donation requests that need delivery,
+// confirm task acceptance, and view contact info for both the donor and the recipient.
+//
+// Core functionality:
+// - Listen to authentication state
+// - Load posts marked as 'needsVolunteer: true'
+// - Display task details
+// - Handle volunteer task acceptance
+// - Mark tasks as completed
+//
+// Dependencies:
+// - Firebase Firestore and Auth
+// - DOM elements in volunteerTasks.html
+
 import { auth, db } from "../../src/firebase.js";
 import {
   collection,
@@ -10,13 +25,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-
+// ===== DOM Elements =====
 const welcomeMsg = document.getElementById("welcome-message");
 const logoutBtn = document.getElementById("logout-btn");
 const postsContainer = document.getElementById("volunteer-posts-container");
 
 let currentUser = null;
 
+// ===== Auth State Listener =====
+// If user is authenticated, show welcome and load posts.
+// Otherwise, redirect to login.
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -36,12 +54,13 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-
+// ===== Logout Button =====
 logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "../index.html";
 });
 
+// ===== Modal Background Click (Close modal) =====
 document.addEventListener("click", (e) => {
   const modal = document.getElementById("contact-modal");
   if (!modal.classList.contains("hidden") && e.target === modal) {
@@ -49,6 +68,8 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ===== Load Tasks That Need Volunteers =====
+// Filters posts where needsVolunteer === true
 function loadVolunteerPosts() {
   const q = query(collection(db, "posts"), where("needsVolunteer", "==", true));
   onSnapshot(q, (snapshot) => {
@@ -58,10 +79,12 @@ function loadVolunteerPosts() {
 
     snapshot.forEach(docSnap => {
       const post = docSnap.data();
-
       const expiry = post.expiry?.toDate();
+
+      // Skip expired or already completed posts
       if ((expiry && expiry < now) || post.status === "done") return;
       
+      // Append card with task info
       postsContainer.innerHTML += `
         <div class="volunteer-card" data-id="${docSnap.id}">
         <h3>${post.title}</h3>
@@ -76,6 +99,9 @@ function loadVolunteerPosts() {
   });
 }
 
+// ===== Accept Task Flow =====
+// Triggered when a volunteer clicks "Accept Task"
+// Displays modal with pickup and delivery contact details
 window.acceptVolunteer = async function(postId) {
   const postRef = doc(db, "posts", postId);
   const postSnap = await getDoc(postRef);
@@ -83,12 +109,14 @@ window.acceptVolunteer = async function(postId) {
 
   if (!currentUser || !postData) return;
 
+  // Fetch donor and recipient info
   const donorSnap = await getDoc(doc(db, "users", postData.userId));
   const donor = donorSnap.exists() ? donorSnap.data() : null;
 
   const receiverSnap = await getDoc(doc(db, "users", postData.requestedBy));
   const receiver = receiverSnap.exists() ? receiverSnap.data() : null;
 
+  // Compose the message shown in modal
   let message = `
   <h3>Are you sure you want to take this task? 🤝</h3>
   <hr/>
@@ -114,6 +142,7 @@ window.acceptVolunteer = async function(postId) {
     `;
   }
 
+  // Show contact modal
   const contactModal = document.getElementById("contact-modal");
   const contactContent = document.getElementById("contact-modal-content");
 
@@ -127,6 +156,9 @@ window.acceptVolunteer = async function(postId) {
   contactModal.classList.remove("hidden");
 };
 
+// ===== Mark Task as Completed =====
+// Updates Firestore to mark the task as done
+// Hides modal and removes card from the page
 window.markTaskDone = async function(postId) {
   const postRef = doc(db, "posts", postId);
 

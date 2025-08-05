@@ -1,3 +1,9 @@
+<!--
+  signUp.html
+  This page provides a registration form for new users to join ShareBite
+  and optionally register as a volunteer or business.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,11 +16,15 @@
 
   </head>  
 <body>
+  <!-- Fullscreen overlay background -->
   <div class="overlay">
+    <!-- Registration box -->
     <div class="signup-box">
       <a href="../index.html" class="close-btn" aria-label="Close">✕</a>
       <h2>Sign Up</h2>
       <p class="intro-text">Join our community to share or receive meals</p>
+      
+      <!-- Registration form -->
       <form id="signup-form">
         <label for="fullName">Full Name</label>
         <input type="text" id="fullName" name="fullName" required />
@@ -26,6 +36,7 @@
         <div class="custom-dropdown" id="custom-location">
           <div class="selected-option">Select your location</div>
           <div class="dropdown-options">
+            <!-- Full list of cities -->
             <div class="option" data-value="Ramat HaGolan">Ramat HaGolan</div>
             <div class="option" data-value="Haifa">Haifa</div>
             <div class="option" data-value="Tel Aviv">Tel Aviv</div>
@@ -92,9 +103,12 @@
           <button class="primary" type="submit">Sign Up with Email</button>
         </div>
         
+        <!-- Feedback elements -->
         <div id="error-message" class="error-message"></div> 
         <div id="message-box" class="hidden"></div>       
       </form>
+
+      <!-- Switch to sign in -->
       <a href="signIn.html" class="close">Already have an account? Sign in</a>
     </div>
   </div>

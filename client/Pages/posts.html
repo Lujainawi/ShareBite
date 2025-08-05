@@ -1,3 +1,9 @@
+<!--
+  posts.html
+  This page displays available food posts, allows users to filter, create, and interact with posts,
+  and includes modals for volunteer requests, contact info, guest prompts, and post management.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +16,7 @@
   
 </head>
 <body>
-  <!-- Toolbar -->
+  <!-- Toolbar for navigation -->
   <header>
     <span id="welcome-message">Hello, User</span>
     <nav>
@@ -21,7 +27,7 @@
     </nav>
   </header>
 
-  <!-- Filter Bar with Custom Dropdown -->
+  <!-- Filter bar for locations -->
   <div class="filter-bar">
     <label for="custom-location-filter"> Select Location:</label>
   
@@ -74,7 +80,7 @@
   </div>
 
 
-  <!-- Posts Container -->
+  <!-- Main content: posts + add button -->
   <main>
     <button id="add-post-btn" class="add-btn">+</button>
     <div id="posts-container"></div>
@@ -151,7 +157,7 @@
   </div>
 
 
-   <!-- Meal Receiving Option Modal -->
+    <!-- Meal Receiving Option Modal -->
    <div id="interested-modal" class="modal hidden">
     <div class="modal-content">
       <h3>🍽 How would you like to receive this meal?</h3>
@@ -165,19 +171,18 @@
   </div>
 
   
-  <!-- Global Loading Spinner -->
+  <!-- Spinner while loading -->
   <div id="global-spinner" class="hidden">
     <div class="loader"></div>
   </div>
   
-  <!-- Modal להצגת פרטי המפרסם -->
+  <!-- Contact Info Modal -->
   <div id="contact-modal" class="modal hidden">
     <div class="modal-content" id="contact-modal-content">
-      <!-- נעדכן את התוכן פה ב-JS -->
     </div>
   </div>
 
-  <!-- Confirmation Modal -->
+  <!-- Confirmation Modal after requesting volunteer -->
   <div id="confirmation-modal" class="modal hidden">
     <div class="modal-content">
       <h3>🎉 Volunteer Request Sent!</h3>
@@ -199,19 +204,16 @@
   </div>
 
 
-  <!-- Modal for guest users -->
-<div id="guest-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>👤 Guest Mode</h3>
-    <p>To express interest in this meal, you need to sign up or log in.</p>
-    <div class="modal-buttons">
-      <button id="guest-signup-btn">Sign Up</button>
-      <button id="guest-cancel-btn">Cancel</button>
+  <!-- Guest Warning Modal -->
+  <div id="guest-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>👤 Guest Mode</h3>
+      <p>To express interest in this meal, you need to sign up or log in.</p>
+      <div class="modal-buttons">
+        <button id="guest-signup-btn">Sign Up</button>
+        <button id="guest-cancel-btn">Cancel</button>
+      </div>
     </div>
   </div>
-</div>
-
-
 </body>
-
 </html>

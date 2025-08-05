@@ -1,3 +1,8 @@
+<!--
+  This page displays posts that require volunteer action,
+  allowing logged-in volunteers to view, accept, and complete tasks.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,7 @@
 
 </head>
 <body>
-  <!-- Toolbar -->
+  <!-- Toolbar header for navigation and logout -->
   <header>
     <span id="welcome-message">Hello, Volunteer</span>
     <nav>
@@ -18,20 +23,20 @@
     </nav>
   </header>
 
-  <!-- Volunteer Posts -->
+  <!-- Section displaying tasks waiting for volunteer pickup -->
   <main>
     <h2 class="page-title">Meals Waiting for Volunteers</h2>
     <div id="volunteer-posts-container"></div>
   </main>
 
-  <!-- Contact Info Modal -->
+  <!-- Modal shown when a volunteer views contact info -->
   <div id="contact-modal" class="modal hidden">
     <div class="modal-content" id="contact-modal-content">
     
     </div>
   </div>
 
-  <!-- Completion Confirmation Modal -->
+  <!-- Modal shown when task is marked as completed -->
   <div id="done-confirmation-modal" class="modal hidden">
     <div class="modal-content">
       <h3>✅ Task Completed</h3>
@@ -39,6 +44,5 @@
       <button onclick="document.getElementById('done-confirmation-modal').classList.add('hidden')">Great!</button>
     </div>
   </div>
-
 </body>
 </html>
